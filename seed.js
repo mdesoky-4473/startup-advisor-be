@@ -10,8 +10,18 @@ const client = require("./db");
         username VARCHAR(50) UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+      );`
+    );
+
+      await client.query(`
+      CREATE TABLE ideas (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        idea TEXT NOT NULL,
+        analysis TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );`
+    );
 
     // --- optional demo account ---
     const hash = await bcrypt.hash("demo123", 10);
